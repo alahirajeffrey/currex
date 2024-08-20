@@ -70,6 +70,8 @@ export default class WalletController {
       wallet.isVerified = true;
       wallet.save();
 
+      // create did and send to user to store for future transactions
+
       return res.status(200).json({ message: "wallet verified" });
     } catch (error) {
       console.log(error);
