@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 
-const walletSchema = new mongoose.Schema({
-  id: { type: String, required: false },
-  createdAt: { type: Date, required: true, unique: true },
-  updatedAt: { type: Date, default: new Date.now() },
-});
+const walletSchema = new mongoose.Schema(
+  {
+    isVerified: { type: Boolean, default: false },
+  },
+  { timestamps: true }
+);
 
 const Wallet = mongoose.model("Wallet", walletSchema);
-module.exports = Wallet;
+
+export default Wallet;
