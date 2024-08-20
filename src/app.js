@@ -1,21 +1,22 @@
 import express from "express";
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import walletRouter from "./routes/walletRoute.js";
 
+dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use("/api/v1/wallet", walletRouter);
 
 // connect to mongodb
 mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URL)
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log("connected to mongo");
   })
   .catch((err) => {
-    console.error("Could not connect to MongoDB", err);
+    console.error("could not connect to mongo", err);
   });
 
 export default app;
