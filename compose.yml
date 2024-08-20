@@ -3,7 +3,7 @@ version: "3.8"
 services:
   mongo:
     image: mongo
-    container_name: mongo
+    container_name: currex-mongo
     restart: always
     ports:
       - "27017:27017"
