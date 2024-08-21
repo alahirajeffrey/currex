@@ -29,8 +29,8 @@ export default class WalletService {
    * create wallet
    * @returns
    */
-  async createWallet() {
-    return await this.walletRepository.createWallet();
+  async createWallet(publicKey) {
+    return await this.walletRepository.createWallet(publicKey);
   }
 
   /**
