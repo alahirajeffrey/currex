@@ -1,6 +1,7 @@
 import WalletRepository from "../repositories/walletRepository.js";
 import WalletService from "../services/walletService.js";
 import Wallet from "../models/Wallet.js";
+import { DidDht } from "@web5/dids";
 
 export default class WalletController {
   walletRepository = new WalletRepository(Wallet);
@@ -19,12 +20,16 @@ export default class WalletController {
   async createWallet(req, res) {
     try {
       const seedPhrase = await this.walletService.generateSeedPhrase();
-      const newWallet = await this.walletService.createWallet();
+
+      // Creates a DID using the DHT method and publishes the DID Document to the DHT
+      const didDht = await DidDht.create({ publish: true });
+
+      //DID and its associated data which can be exported and used in different contexts/apps
+      const portableDid = await didDht.export();
 
       return res.status(201).json({
-        wallet: newWallet,
+        portableDid: portableDid,
         data: seedPhrase,
-        message: "ensure you write down your seed phrase",
       });
     } catch (error) {
       console.log(error);
@@ -40,17 +45,12 @@ export default class WalletController {
    */
   async verifyWallet(req, res) {
     try {
-      const { walletId, seedPhrase } = req.body;
+      const { publicKey, seedPhrase } = req.body;
       // remove this after validation
-      if (!walletId && !seedPhrase)
+      if (!publicKey && !seedPhrase)
         return res
           .status(400)
-          .json({ message: "walletId and seed phrase required" });
-
-      const wallet = await this.walletRepository.findWalletById(walletId);
-
-      if (!wallet)
-        return res.status(404).json({ message: "wallet does not exist" });
+          .json({ message: "publicKey and seed phrase required" });
 
       // split seed phrase to check length
       const splitSeedPhrase = seedPhrase.split(" ");
@@ -67,12 +67,10 @@ export default class WalletController {
       if (!isSeedPhraseVerified)
         return res.status(400).json({ message: "incorrect seed phrase" });
 
-      wallet.isVerified = true;
-      wallet.save();
+      // create and verify wallet
+      const wallet = await this.walletRepository.createWallet(publicKey);
 
-      // create did and send to user to store for future transactions
-
-      return res.status(200).json({ message: "wallet verified" });
+      return res.status(200).json({ data: wallet, message: "wallet created" });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "internal server error" });
