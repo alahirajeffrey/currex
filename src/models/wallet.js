@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const walletSchema = new mongoose.Schema(
   {
-    isVerified: { type: Boolean, default: false },
+    publicKey: { type: String, required: true },
+    balance: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
