@@ -22,4 +22,9 @@ ratingRouter.get(
   ratingController.getAllRatingAndComments.bind(ratingController)
 );
 
+ratingRouter.get(
+  "/pfi/:pfiDid",
+  ratingController.getPfiRating.bind(ratingController)
+);
+
 export default ratingRouter;
