@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 const RatingSchema = new mongoose.Schema(
   {
     pfi: { type: String, required: true },
-    walletId: { type: String },
-    rating: { type: Number },
-    comment: { type: String },
+    walletId: { type: String, required: true },
+    rating: { type: Number, required: true },
+    comment: { type: String, required: false },
   },
   { timestamps: true }
 );
