@@ -21,9 +21,26 @@ class RatingRepository {
     }
   }
 
-  async addRating(pfi, walletId, rating, comment) {
+  async getAllPfiRating(pfiDid) {
     try {
-      return await this.ratingModel.create({ pfi, walletId, rating, comment });
+      const rating = await this.ratingModel.find({ pfiDid });
+
+      if (!rating) throw new Error("rating does not exist for the pfi");
+      return rating;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async addRating(pfi, walletId, rating, comment, pfiDid) {
+    try {
+      return await this.ratingModel.create({
+        pfi,
+        walletId,
+        rating,
+        comment,
+        pfiDid,
+      });
     } catch (error) {
       throw new Error(error);
     }
