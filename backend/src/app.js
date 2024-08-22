@@ -2,12 +2,14 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import walletRouter from "./routes/walletRoute.js";
+import transctionRouter from "./routes/transactionRoute.js";
 
 dotenv.config();
 const app = express();
 
 app.use(express.json());
 app.use("/api/v1/wallet", walletRouter);
+app.use("/api/v1/transaction", transctionRouter);
 
 // connect to mongodb
 mongoose
