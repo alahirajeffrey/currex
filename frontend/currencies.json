@@ -1,0 +1,48 @@
+{
+  "currencies": [
+    {
+      "id": 1,
+      "code": "GHS"
+    },
+    {
+      "id": 2,
+      "code": "USDC"
+    },
+    {
+      "id": 3,
+      "code": "NGN"
+    },
+    {
+      "id": 4,
+      "code": "KES"
+    },
+    {
+      "id": 5,
+      "code": "USD"
+    },
+    {
+      "id": 6,
+      "code": "EUR"
+    },
+    {
+      "id": 7,
+      "code": "GBP"
+    },
+    {
+      "id": 8,
+      "code": "BTC"
+    },
+    {
+      "id": 9,
+      "code": "BD"
+    },
+    {
+      "id": 10,
+      "code": "AUD"
+    },
+    {
+      "id": 11,
+      "code": "MXN"
+    }
+  ]
+}
