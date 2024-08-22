@@ -11,12 +11,7 @@ export default class WalletController {
     this.walletService = walletService;
   }
 
-  /**
-   * create new wallet and send seed phrase
-   * @param {*} req
-   * @param {*} res
-   * @returns
-   */
+  // create wallet  for users
   async createWallet(req, res) {
     try {
       const seedPhrase = await this.walletService.generateSeedPhrase();
@@ -33,16 +28,13 @@ export default class WalletController {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "internal server error" });
+      res
+        .status(500)
+        .json({ message: error.message || "internal server error" });
     }
   }
 
-  /**
-   * verify seed phrase and wallet
-   * @param {*} req
-   * @param {*} res
-   * @returns
-   */
+  // verify wallet and create DID
   async verifyWallet(req, res) {
     try {
       const { publicKey, seedPhrase } = req.body;
@@ -73,7 +65,9 @@ export default class WalletController {
       return res.status(200).json({ data: wallet, message: "wallet created" });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "internal server error" });
+      res
+        .status(500)
+        .json({ message: error.message || "internal server error" });
     }
   }
 }

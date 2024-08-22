@@ -30,7 +30,7 @@ class WalletRepository {
         MXN: balance,
       });
     } catch (error) {
-      throw error;
+      throw Error(error.message);
     }
   }
 
@@ -38,7 +38,7 @@ class WalletRepository {
     try {
       return await this.walletModel.findById(id);
     } catch (error) {
-      throw error;
+      throw Error(error.message);
     }
   }
 }
