@@ -13,15 +13,16 @@ export default class RatingController {
   // add rating to pfi
   async addRating(req, res) {
     try {
-      const { walletId, rating, comment, pfi } = req.body;
-      if (!walletId && !rating && !pfi)
-        throw new Error("walletId, raing and pfi required ");
+      const { walletId, rating, comment, pfi, pfiDid } = req.body;
+      if (!walletId && !rating && !pfi && !pfiDid)
+        throw new Error("walletId, raing, pfi and pfiDid required ");
 
       const newRating = await this.ratingService.addRating(
         pfi,
         walletId,
         Number(rating),
-        comment
+        comment,
+        pfiDid
       );
 
       return res.status(201).json({ data: newRating });
@@ -57,6 +58,25 @@ export default class RatingController {
       const ratings = await this.ratingService.getAllRatingAndComments();
 
       return res.status(200).json({ message: ratings });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: error.message || "internal server error" });
+    }
+  }
+
+  // get rating of a pfi
+  async getPfiRating(req, res) {
+    try {
+      const { averageRating, pfiName } = await this.ratingService.getPfiRating(
+        req.params.pfiDid
+      );
+
+      // console.l;
+      return res
+        .status(200)
+        .json({ averageRating: averageRating, pfiName: pfiName });
     } catch (error) {
       console.log(error);
       res
