@@ -10,12 +10,12 @@ export default class TransactionController {
     this.transactionService = transactionService;
   }
 
-  getOfferings(req, res) {
+  async getOfferings(req, res) {
     try {
       const { to, from } = req.body;
       if (!to && !from) throw new Error("to and from currencies required");
 
-      const offerings = this.transactionService.fetchOfferings(to, from);
+      const offerings = await this.transactionService.fetchOfferings(to, from);
 
       return res.status(200).json({ data: offerings });
     } catch (error) {
