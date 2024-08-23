@@ -8,3 +8,40 @@ import {
   Message,
 } from "@tbdex/http-client";
 import { VerifiableCredential, PresentationExchange } from "@web5/credentials";
+import TransactionRepository from "../repositories/transactionRepository.js";
+import allowedPfis from "../../../allowedPfis.json" assert { type: "json" };
+import Transaction from "../models/Transaction.js";
+
+export default class TransactionService {
+  transactionRepository = new TransactionRepository(Transaction);
+  constructor(transactionRepository) {
+    this.transactionRepository = transactionRepository;
+  }
+
+  /**
+   * loop through the pfis and fetch offerings matching requirement
+   * @param {*String} to : currency converted to
+   * @param {*String} from : currencey being converted
+   * @returns : a list of pfis with desired offering
+   */
+  fetchOfferings(to, from) {
+    try {
+      const allOfferings = [];
+
+      // loop through avalilable pfis
+      for (const pfi of allowedPfis) {
+        // loop through offering of current pfi and compare
+        for (const offering of pfi.offerings) {
+          if (to === offering.to && from === offering.from) {
+            allOfferings.push({ pfi: pfi.name, pfiDid: pfi.did });
+          }
+        }
+      }
+
+      return allOfferings;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error);
+    }
+  }
+}
