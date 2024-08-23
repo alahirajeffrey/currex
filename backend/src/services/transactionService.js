@@ -24,7 +24,7 @@ export default class TransactionService {
    * @param {*String} from : currencey being converted
    * @returns : a list of pfis with desired offering
    */
-  fetchOfferings(to, from) {
+  async fetchOfferings(to, from) {
     try {
       const allOfferings = [];
 
@@ -33,7 +33,13 @@ export default class TransactionService {
         // loop through offering of current pfi and compare
         for (const offering of pfi.offerings) {
           if (to === offering.to && from === offering.from) {
-            allOfferings.push({ pfi: pfi.name, pfiDid: pfi.did });
+            // connect to tbdex and get offerings
+
+            const offerings = await TbdexHttpClient.getOfferings({
+              pfiDid: pfi.did,
+            });
+            console.log(offering);
+            allOfferings.push(...offerings);
           }
         }
       }
