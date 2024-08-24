@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const walletSchema = new mongoose.Schema(
   {
-    publicKey: { type: String, required: true },
+    name: { type: String, required: true },
+    password: { type: String, required: true },
+    countryCode: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
     GHS: { type: Number, default: 0 },
     USDC: { type: Number, default: 0 },
     NGN: { type: Number, default: 0 },
