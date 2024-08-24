@@ -60,9 +60,31 @@ export default class WalletController {
         return res.status(400).json({ message: "incorrect seed phrase" });
 
       // create and verify wallet
-      const wallet = await this.walletRepository.createWallet(publicKey);
+      const wallet = await this.walletService.createWallet(publicKey);
 
       return res.status(200).json({ data: wallet, message: "wallet created" });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: error.message || "internal server error" });
+    }
+  }
+
+  async createVerifiableCredetial(req, res) {
+    try {
+      const { customerName, customerDid, countryCode } = req.body;
+
+      if (!customerName && !customerDid && !countryCode)
+        throw new Error("customerName, customerDid and countryCode required");
+
+      const response = await this.walletService.createVerifiableCredetial(
+        customerName,
+        countryCode,
+        customerDid
+      );
+
+      return res.status(200).json({ data: response.data });
     } catch (error) {
       console.log(error);
       res
