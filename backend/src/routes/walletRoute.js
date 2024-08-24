@@ -21,4 +21,9 @@ walletRouter.post(
   walletController.verifyWallet.bind(walletController)
 );
 
+walletRouter.post(
+  "/credentials",
+  walletController.createVerifiableCredetial.bind(walletController)
+);
+
 export default walletRouter;
