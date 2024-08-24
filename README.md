@@ -1,5 +1,12 @@
 # currex
 
+## Design Considerations
+
+- Profitability
+- Optionality
+- Customer Management
+- Customer's satisfaction
+
 ### Todo
 
 - Add data validation on backend
