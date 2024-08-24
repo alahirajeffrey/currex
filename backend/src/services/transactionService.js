@@ -50,4 +50,33 @@ export default class TransactionService {
       throw new Error(error);
     }
   }
+
+  /**
+   * get all transactions by a pfi
+   * @param {*String} pfiDid : DID of pfi
+   * @returns : array of trandactions made using a PFI
+   */
+  async getPfiTransactionsByDid(pfiDid) {
+    return await this.transactionRepository.getPfiTransactionsByDid(pfiDid);
+  }
+
+  /**
+   * get single transaction by id
+   * @param {* String} transactionId : transactionId
+   * @returns : transaction object
+   */
+  async getSingleTransactionById(transactionId) {
+    return await this.transactionRepository.getSingleTransactionById(
+      transactionId
+    );
+  }
+
+  /**
+   * get transactions made by a wallet
+   * @param {* String} walletId : id of wallet
+   * @returns : array of transactiobs made by a wallet
+   */
+  async getWalletTransactionById(walletId) {
+    return await this.transactionRepository.getWalletTransactionById(walletId);
+  }
 }

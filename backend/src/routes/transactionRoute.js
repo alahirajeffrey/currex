@@ -15,4 +15,19 @@ transctionRouter.get(
   tranasctionController.getOfferings.bind(tranasctionController)
 );
 
+transctionRouter.get(
+  "/pfi/:pfiDid",
+  tranasctionController.getPfiTransactionsByDid.bind(tranasctionController)
+);
+
+transctionRouter.get(
+  "/wallet/:walletId",
+  tranasctionController.getWalletTransactionById.bind(tranasctionController)
+);
+
+transctionRouter.get(
+  "/:transactionId",
+  tranasctionController.getSingleTransactionById.bind(tranasctionController)
+);
+
 export default transctionRouter;
