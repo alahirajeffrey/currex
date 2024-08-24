@@ -30,4 +30,28 @@ export default class TransactionRepository {
       throw new Error(error);
     }
   }
+
+  async getPfiTransactionsByDid(pfiDid) {
+    try {
+      return await this.transactionModel.find({ pfiDid: pfiDid });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getSingleTransactionById(transactionId) {
+    try {
+      return await this.transactionModel.findById(transactionId);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getWalletTransactionById(walletId) {
+    try {
+      return await this.transactionModel.find({ walletId: walletId });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
