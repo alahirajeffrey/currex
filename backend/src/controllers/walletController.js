@@ -14,7 +14,9 @@ export default class WalletController {
   // create wallet  for users
   async createWallet(req, res) {
     try {
-      const seedPhrase = await this.walletService.generateSeedPhrase();
+      const { name, password, countryCode, username } = req.body;
+      if (!name && !password && !countryCode && !username)
+        throw new Error("name, password, countryCode, username required");
 
       // Creates a DID using the DHT method and publishes the DID Document to the DHT
       const didDht = await DidDht.create({ publish: true });
@@ -22,9 +24,15 @@ export default class WalletController {
       //DID and its associated data which can be exported and used in different contexts/apps
       const portableDid = await didDht.export();
 
+      const wallet = await this.walletService.createWallet(
+        name,
+        password,
+        countryCode,
+        username
+      );
+
       return res.status(201).json({
-        portableDid: portableDid,
-        data: seedPhrase,
+        data: { wallet: wallet, didUri: portableDid.uri },
       });
     } catch (error) {
       console.log(error);
@@ -34,35 +42,15 @@ export default class WalletController {
     }
   }
 
-  // verify wallet and create DID
-  async verifyWallet(req, res) {
+  async loginToWallet(req, res) {
     try {
-      const { publicKey, seedPhrase } = req.body;
-      // remove this after validation
-      if (!publicKey && !seedPhrase)
-        return res
-          .status(400)
-          .json({ message: "publicKey and seed phrase required" });
+      const { username, password } = req.body;
+      if (!username && !password)
+        throw new Error("username and password required");
 
-      // split seed phrase to check length
-      const splitSeedPhrase = seedPhrase.split(" ");
-      if (splitSeedPhrase.length !== 12)
-        return res
-          .status(400)
-          .json({ message: "seed phrase must be 12 letter long" });
+      const token = await this.walletService.loginToWallet(username, password);
 
-      // veriify bip39 seed phrase
-      const isSeedPhraseVerified = await this.walletService.verifySeedPhrase(
-        seedPhrase
-      );
-
-      if (!isSeedPhraseVerified)
-        return res.status(400).json({ message: "incorrect seed phrase" });
-
-      // create and verify wallet
-      const wallet = await this.walletService.createWallet(publicKey);
-
-      return res.status(200).json({ data: wallet, message: "wallet created" });
+      return res.status(200).json({ data: token });
     } catch (error) {
       console.log(error);
       res
@@ -73,15 +61,10 @@ export default class WalletController {
 
   async createVerifiableCredetial(req, res) {
     try {
-      const { customerName, customerDid, countryCode } = req.body;
-
-      if (!customerName && !customerDid && !countryCode)
-        throw new Error("customerName, customerDid and countryCode required");
-
       const response = await this.walletService.createVerifiableCredetial(
-        customerName,
-        countryCode,
-        customerDid
+        req.user.name,
+        req.user.countryCode,
+        req.user.didUri
       );
 
       return res.status(200).json({ data: response.data });

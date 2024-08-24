@@ -1,7 +1,8 @@
-import bip39 from "bip39";
 import WalletRepository from "../repositories/walletRepository.js";
 import Wallet from "../models/Wallet.js";
 import axios from "axios";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export default class WalletService {
   walletRepository = new WalletRepository(Wallet);
@@ -11,36 +12,55 @@ export default class WalletService {
   }
 
   /**
-   * generate 12 letter seed phrase
-   * @returns
+   * create a wallet for a user
+   * @param {* string} name : user's name
+   * @param {* string} password : user's password
+   * @param {* string} countryCode : country code of user
+   * @param {* string} username : unique user name
+   * @returns : wallet object and did
    */
-  async generateSeedPhrase() {
-    return bip39.generateMnemonic();
+  async createWallet(name, password, countryCode, username) {
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    return await this.walletRepository.createWallet(
+      name,
+      passwordHash,
+      countryCode,
+      username
+    );
   }
 
   /**
-   * verify generated seed phrase
-   * @returns
+   * login to a wallet
+   * @param {* string} username : username of user
+   * @param {*} password : user's password
    */
-  async verifySeedPhrase(seedPhrase) {
-    return bip39.validateMnemonic(seedPhrase);
-  }
+  async loginToWallet(username, password) {
+    try {
+      const wallet = await this.walletRepository.findWalletByUsername(username);
+      if (!wallet) throw new Error("user does not exist");
 
-  /**
-   * create wallet
-   * @returns
-   */
-  async createWallet(publicKey) {
-    return await this.walletRepository.createWallet(publicKey);
-  }
+      const isPasswordCorrect = await bcrypt.compare(password, wallet.password);
+      if (!isPasswordCorrect) throw new Error("incorrect password or username");
 
-  /**
-   * find wallet by id
-   * @param {*String} id: wallet id
-   * @returns
-   */
-  async findWalletById(id) {
-    return await this.walletRepository.findWalletById(id);
+      // generate token for user
+      const token = jwt.sign(
+        {
+          name: wallet.name,
+          countryCode: wallet.countryCode,
+          username: username,
+          walletId: wallet._id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "30m",
+        }
+      );
+
+      return token;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   /**

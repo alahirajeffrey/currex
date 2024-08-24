@@ -10,13 +10,23 @@ class WalletRepository {
     this.walletModel = Wallet;
   }
 
-  async createWallet(publicKey) {
+  async createWallet(name, password, countryCode, username) {
     try {
       // give new wallet 5000 for all currencies if NODE_ENV = development
-      const balance = NODE_ENV === "development" ? 5000 : 0;
+      const balance = NODE_ENV === "development" ? 1000 : 0;
+
+      // ensure username does not already exist
+      const usernameExists = await this.walletModel.findOne({
+        username: username,
+      });
+
+      if (usernameExists) throw new Error("username already exists");
 
       return await this.walletModel.create({
-        publicKey: publicKey,
+        name: name,
+        password: password,
+        countryCode: countryCode,
+        username: username,
         GHS: balance,
         USDC: balance,
         NGN: balance,
@@ -30,7 +40,7 @@ class WalletRepository {
         MXN: balance,
       });
     } catch (error) {
-      throw Error(error.message);
+      throw new Error(error);
     }
   }
 
@@ -38,7 +48,15 @@ class WalletRepository {
     try {
       return await this.walletModel.findById(id);
     } catch (error) {
-      throw Error(error.message);
+      throw new Error(error);
+    }
+  }
+
+  async findWalletByUsername(username) {
+    try {
+      return await this.walletModel.findOne({ username: username });
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

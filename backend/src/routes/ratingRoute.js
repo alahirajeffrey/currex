@@ -3,6 +3,7 @@ import Rating from "../models/Rating.js";
 import RatingRepository from "../repositories/ratingRepository.js";
 import RatingService from "../services/ratingService.js";
 import RatingController from "../controllers/ratingController.js";
+import verifyToken from "../utils/decodeToken.js";
 
 const ratingRepository = new RatingRepository(Rating);
 const ratingService = new RatingService(ratingRepository);
@@ -10,7 +11,11 @@ const ratingController = new RatingController(ratingService);
 
 const ratingRouter = express.Router();
 
-ratingRouter.post("/", ratingController.addRating.bind(ratingController));
+ratingRouter.post(
+  "/",
+  verifyToken,
+  ratingController.addRating.bind(ratingController)
+);
 
 ratingRouter.get(
   "/:ratingId",

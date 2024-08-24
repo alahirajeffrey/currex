@@ -3,6 +3,7 @@ import WalletController from "../controllers/walletController.js";
 import WalletService from "../services/walletService.js";
 import WalletRepository from "../repositories/walletRepository.js";
 import Wallet from "../models/Wallet.js";
+import verifyToken from "../utils/decodeToken.js";
 
 const walletRepository = new WalletRepository(Wallet);
 const walletService = new WalletService(walletRepository);
@@ -17,12 +18,13 @@ walletRouter.post(
 
 // include validation
 walletRouter.post(
-  "/verify",
-  walletController.verifyWallet.bind(walletController)
+  "/login",
+  walletController.loginToWallet.bind(walletController)
 );
 
 walletRouter.post(
   "/credentials",
+  verifyToken,
   walletController.createVerifiableCredetial.bind(walletController)
 );
 
