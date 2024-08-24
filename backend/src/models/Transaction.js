@@ -7,6 +7,7 @@ const TransactionSchema = new mongoose.Schema(
     to: { type: String },
     pfi: { type: String },
     pfiDid: { type: String },
+    if: { type: String },
   },
   { timestamps: true }
 );
