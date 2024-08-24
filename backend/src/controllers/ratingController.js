@@ -13,13 +13,13 @@ export default class RatingController {
   // add rating to pfi
   async addRating(req, res) {
     try {
-      const { walletId, rating, comment, pfi, pfiDid } = req.body;
-      if (!walletId && !rating && !pfi && !pfiDid)
-        throw new Error("walletId, raing, pfi and pfiDid required ");
+      const { rating, comment, pfi, pfiDid } = req.body;
+      if (!rating && !pfi && !pfiDid)
+        throw new Error("rating, pfi and pfiDid required ");
 
       const newRating = await this.ratingService.addRating(
         pfi,
-        walletId,
+        req.user.walletId,
         Number(rating),
         comment,
         pfiDid
