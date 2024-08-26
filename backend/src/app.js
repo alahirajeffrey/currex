@@ -4,9 +4,17 @@ import dotenv from "dotenv";
 import walletRouter from "./routes/walletRoute.js";
 import transctionRouter from "./routes/transactionRoute.js";
 import ratingRouter from "./routes/ratingRoute.js";
+import cors from "cors";
+// import pino from "pino";
+// import pinoHttp from "pino-http";
 
 dotenv.config();
 const app = express();
+
+// const logger = pino({});
+
+app.use(cors({ origin: process.env.FE_ORIGIN }));
+// app.use(pinoHttp({ logger }));
 
 app.use(express.json());
 app.use("/api/v1/wallet", walletRouter);
