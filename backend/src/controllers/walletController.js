@@ -2,6 +2,7 @@ import WalletRepository from "../repositories/walletRepository.js";
 import WalletService from "../services/walletService.js";
 import Wallet from "../models/Wallet.js";
 import { DidDht } from "@web5/dids";
+import ErrorHandler from "../utils/errorHandler.js";
 
 export default class WalletController {
   walletRepository = new WalletRepository(Wallet);
@@ -15,6 +16,7 @@ export default class WalletController {
   async createWallet(req, res) {
     try {
       const { name, password, countryCode, username } = req.body;
+
       if (!name && !password && !countryCode && !username)
         throw new Error("name, password, countryCode, username required");
 
@@ -30,6 +32,8 @@ export default class WalletController {
         countryCode,
         username
       );
+
+      // encrypt did before sending to FE
 
       return res.status(201).json({
         data: { wallet: wallet, didUri: portableDid.uri },
