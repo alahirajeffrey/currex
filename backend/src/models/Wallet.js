@@ -6,17 +6,12 @@ const walletSchema = new mongoose.Schema(
     password: { type: String, required: true },
     countryCode: { type: String, required: true },
     username: { type: String, required: true, unique: true },
-    GHS: { type: Number, default: 0 },
-    USDC: { type: Number, default: 0 },
-    NGN: { type: Number, default: 0 },
-    KES: { type: Number, default: 0 },
-    USD: { type: Number, default: 0 },
-    EUR: { type: Number, default: 0 },
-    GBP: { type: Number, default: 0 },
-    BTC: { type: Number, default: 0 },
-    BD: { type: Number, default: 0 },
-    AUD: { type: Number, default: 0 },
-    MXN: { type: Number, default: 0 },
+    balances: [
+      {
+        currency: { type: String, required: true },
+        amount: { type: Number, required: true, default: 0 },
+      },
+    ],
   },
   { timestamps: true }
 );
