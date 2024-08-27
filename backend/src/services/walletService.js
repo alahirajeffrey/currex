@@ -82,4 +82,15 @@ export default class WalletService {
       throw new Error(error);
     }
   }
+
+  /**
+   * find wallet by id
+   * @param {* String} id : wallet id
+   * @returns : wallet object
+   */
+  async getWalletBalaceById(id) {
+    const wallet = await this.walletRepository.findWalletById(id);
+
+    return wallet.balances;
+  }
 }
