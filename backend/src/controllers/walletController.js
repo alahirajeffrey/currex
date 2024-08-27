@@ -79,4 +79,18 @@ export default class WalletController {
         .json({ message: error.message || "internal server error" });
     }
   }
+
+  async getWalletBalaceById(req, res) {
+    try {
+      const walletBalances = await this.walletService.getWalletBalaceById(
+        req.user.walletId
+      );
+
+      return res.status(200).json({ data: walletBalances });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: error.message || "internal server error" });
+    }
+  }
 }
