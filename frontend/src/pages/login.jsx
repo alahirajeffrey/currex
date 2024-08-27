@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
 import axios from "axios";
-// import Cookies from "js-cookie";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -92,7 +91,9 @@ const Login = () => {
             className="w-full px-3 py-2 border rounded-lg focus:outline-none"
           />
         </div>
-        <Button title="Login" onPressed={handleSubmit} />
+        <div className="flex justify-center ">
+          <Button title="Login" onPressed={handleSubmit} />
+        </div>
       </div>
     </div>
   );
