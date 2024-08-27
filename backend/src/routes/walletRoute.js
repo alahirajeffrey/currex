@@ -28,4 +28,10 @@ walletRouter.post(
   walletController.createVerifiableCredetial.bind(walletController)
 );
 
+walletRouter.get(
+  "/balance",
+  verifyToken,
+  walletController.getWalletBalaceById.bind(walletController)
+);
+
 export default walletRouter;
