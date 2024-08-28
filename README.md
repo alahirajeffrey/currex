@@ -4,7 +4,7 @@ Currex is a decentralized wallet application for the Africa Bitcoin Conference: 
 
 ## Requirements
 
-- [Nodejs](https://nodejs.org/en/) is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+- [Nodejs](https://nodejs.org/en/) is a JavaScript runtime built on Chrome's V8 JavaScript engine. Is is a cross-platform, open-source JavaScript runtime environment that can run on Windows, Linux, Unix, macOS, and more.
 
 - [Docker-compose](https://docs.docker.com/compose/) is a tool for defining and running multi-container applications. simplifies the control of your entire application stack, making it easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file.
 
