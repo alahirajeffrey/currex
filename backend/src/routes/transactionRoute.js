@@ -12,6 +12,11 @@ const tranasctionController = new TransactionController(transactionService);
 const transctionRouter = express.Router();
 
 transctionRouter.get(
+  "/:transactionId",
+  tranasctionController.getSingleTransactionById.bind(tranasctionController)
+);
+
+transctionRouter.get(
   "/offerings/:from/:to",
   tranasctionController.getOfferings.bind(tranasctionController)
 );
@@ -25,11 +30,6 @@ transctionRouter.get(
   "/wallet",
   verifyToken,
   tranasctionController.getWalletTransactionById.bind(tranasctionController)
-);
-
-transctionRouter.get(
-  "/:transactionId",
-  tranasctionController.getSingleTransactionById.bind(tranasctionController)
 );
 
 export default transctionRouter;
