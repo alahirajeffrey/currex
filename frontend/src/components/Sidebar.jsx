@@ -1,39 +1,62 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Currency from "./Currency";
+import Transaction from "./Transaction";
 
 const Sidebar = () => {
-  const [currencies, setCurrencies] = useState([]);
+  // const [currencies, setCurrencies] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
+  // get transactions data
   useEffect(() => {
-    const fetchCurrencies = async () => {
+    const fetchTransactions = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8172/api/v1/wallet/balance",
+          "http://localhost:8172/api/v1/transactions/wallet",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-        console.log(response);
-        setCurrencies(response.data.data);
+        setTransactions(response.data.data);
       } catch (error) {
-        console.error("Error fetching currencies:", error);
+        console.error("Error fetching transactions:", error);
       }
     };
-    fetchCurrencies();
+    fetchTransactions();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchCurrencies = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:8172/api/v1/wallet/balance",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //         }
+  //       );
+  //       console.log(response);
+  //       setCurrencies(response.data.data);
+  //     } catch (error) {
+  //       console.error("Error fetching currencies:", error);
+  //     }
+  //   };
+  //   fetchCurrencies();
+  // }, []);
 
   return (
     <div className="w-1/4 h-screen p-4 bg-gray-200">
-      <h2 className="text-lg font-bold mb-4 text-black">Balances</h2>
+      <h2 className="text-lg font-bold mb-4 text-black">Transactions</h2>
       <ul>
-        {currencies.map((currency, index) => (
-          <Currency
+        {transactions.map((transaction, index) => (
+          <Transaction
             key={index}
-            currencyCode={currency.currency}
-            amount={currency.amount}
+            pfiName={transaction.pfiName}
+            from={transaction.from}
+            to={transaction.to}
+            status={transaction.status}
           />
         ))}
       </ul>
