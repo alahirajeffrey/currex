@@ -90,9 +90,9 @@ const GetOffering = () => {
               {offerings.map((offering, index) => (
                 <li key={index} className="mb-2">
                   <Offerings
-                    pfiName={offering.pfiName}
-                    description={offering.description}
-                    rate={offering.rate}
+                    pfiDid={offering.metadata.from}
+                    description={offering.data.description}
+                    rate={offering.data.payoutUnitsPerPayinUnit}
                   />
                 </li>
               ))}
