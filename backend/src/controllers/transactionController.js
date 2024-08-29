@@ -12,7 +12,9 @@ export default class TransactionController {
 
   async getOfferings(req, res) {
     try {
-      const { to, from } = req.body;
+      const from = req.param.from;
+      const to = req.param.to;
+
       if (!to && !from) throw new Error("to and from currencies required");
 
       const offerings = await this.transactionService.fetchOfferings(to, from);
@@ -62,7 +64,7 @@ export default class TransactionController {
 
   async getWalletTransactionById(req, res) {
     try {
-      const { walletId } = req.prams.walletId;
+      const { walletId } = req.user.walletId;
 
       if (!walletId) throw new Error("walletId required");
       const transactions =
