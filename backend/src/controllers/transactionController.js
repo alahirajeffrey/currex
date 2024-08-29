@@ -12,8 +12,8 @@ export default class TransactionController {
 
   async getOfferings(req, res) {
     try {
-      const from = req.param.from;
-      const to = req.param.to;
+      const from = req.params.from;
+      const to = req.params.to;
 
       if (!to && !from) throw new Error("to and from currencies required");
 
