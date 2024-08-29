@@ -3,6 +3,7 @@ import Transaction from "../models/Transaction.js";
 import TransactionService from "../services/transactionService.js";
 import TransactionController from "../controllers/transactionController.js";
 import TransactionRepository from "../repositories/transactionRepository.js";
+import verifyToken from "../utils/decodeToken.js";
 
 const transactionRepository = new TransactionRepository(Transaction);
 const transactionService = new TransactionService(transactionRepository);
@@ -11,7 +12,7 @@ const tranasctionController = new TransactionController(transactionService);
 const transctionRouter = express.Router();
 
 transctionRouter.get(
-  "/offerings",
+  "/offerings/:from/:to",
   tranasctionController.getOfferings.bind(tranasctionController)
 );
 
@@ -21,7 +22,8 @@ transctionRouter.get(
 );
 
 transctionRouter.get(
-  "/wallet/:walletId",
+  "/wallet",
+  verifyToken,
   tranasctionController.getWalletTransactionById.bind(tranasctionController)
 );
 
