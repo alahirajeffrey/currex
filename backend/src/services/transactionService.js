@@ -38,7 +38,7 @@ export default class TransactionService {
             const offerings = await TbdexHttpClient.getOfferings({
               pfiDid: pfi.did,
             });
-            console.log(offering);
+
             allOfferings.push(...offerings);
           }
         }
