@@ -5,9 +5,10 @@ const TransactionSchema = new mongoose.Schema(
     walletId: { type: String, required: true },
     from: { type: String },
     to: { type: String },
-    pfi: { type: String },
+    pfiName: { type: String },
     pfiDid: { type: String },
     id: { type: String },
+    status: { type: String },
   },
   { timestamps: true }
 );
