@@ -54,7 +54,7 @@ export default class WalletController {
     try {
       const { username, password } = req.body;
       if (!username && !password)
-        throw new Error("username and password required");
+        throw new ApiError(400, "username and password required");
 
       const token = await this.walletService.loginToWallet(username, password);
 
@@ -62,7 +62,7 @@ export default class WalletController {
     } catch (error) {
       console.log(error);
       res
-        .status(500)
+        .status(error.statusCode || 500)
         .json({ message: error.message || "internal server error" });
     }
   }
@@ -79,7 +79,7 @@ export default class WalletController {
     } catch (error) {
       console.log(error);
       res
-        .status(500)
+        .status(error.statusCode || 500)
         .json({ message: error.message || "internal server error" });
     }
   }
@@ -93,7 +93,7 @@ export default class WalletController {
       return res.status(200).json({ data: walletBalances });
     } catch (error) {
       res
-        .status(500)
+        .status(error.statusCode || 500)
         .json({ message: error.message || "internal server error" });
     }
   }

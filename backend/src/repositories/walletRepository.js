@@ -45,7 +45,7 @@ class WalletRepository {
         balances: balances,
       });
     } catch (error) {
-      throw new ApiError(500, error);
+      throw error;
     }
   }
 
@@ -56,7 +56,7 @@ class WalletRepository {
 
       return wallet;
     } catch (error) {
-      throw new ApiError(500, error);
+      throw error;
     }
   }
 
@@ -67,7 +67,7 @@ class WalletRepository {
 
       return wallet;
     } catch (error) {
-      throw new ApiError(500, error);
+      throw error;
     }
   }
 }

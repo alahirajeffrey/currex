@@ -61,7 +61,7 @@ export default class WalletService {
 
       return token;
     } catch (error) {
-      throw new ApiError(500, error);
+      throw error;
     }
   }
 
@@ -80,7 +80,7 @@ export default class WalletService {
 
       return response;
     } catch (error) {
-      throw new ApiError(500, error);
+      throw error;
     }
   }
 
