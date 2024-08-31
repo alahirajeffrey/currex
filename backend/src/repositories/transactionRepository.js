@@ -15,7 +15,7 @@ export default class TransactionRepository {
         pfiDid,
       });
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
@@ -27,7 +27,7 @@ export default class TransactionRepository {
 
       return transaction;
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
@@ -35,13 +35,16 @@ export default class TransactionRepository {
     try {
       return await this.transactionModel.find({ pfiDid: pfiDid });
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
   async getSingleTransactionById(transactionId) {
     try {
-      return await this.transactionModel.findById(transactionId);
+      const transaction = await this.transactionModel.findById(transactionId);
+      if (!transaction) throw new ApiError(404, "transaction does not exist");
+
+      return transaction;
     } catch (error) {
       throw new Error(error);
     }
@@ -51,7 +54,7 @@ export default class TransactionRepository {
     try {
       return await this.transactionModel.find({ walletId: walletId });
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 }

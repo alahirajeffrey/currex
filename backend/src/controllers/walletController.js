@@ -3,6 +3,7 @@ import WalletService from "../services/walletService.js";
 import Wallet from "../models/Wallet.js";
 import { DidDht } from "@web5/dids";
 import ErrorHandler from "../utils/errorHandler.js";
+import ApiError from "../utils/errorHandler.js";
 
 export default class WalletController {
   walletRepository = new WalletRepository(Wallet);
@@ -18,13 +19,18 @@ export default class WalletController {
       const { name, password, countryCode, username } = req.body;
 
       if (!name && !password && !countryCode && !username)
-        throw new Error("name, password, countryCode, username required");
+        throw new ApiError(
+          400,
+          "name, password, countryCode, username required"
+        );
 
       // Creates a DID using the DHT method and publishes the DID Document to the DHT
       const didDht = await DidDht.create({ publish: true });
 
       //DID and its associated data which can be exported and used in different contexts/apps
       const portableDid = await didDht.export();
+
+      // encrypt did before sending to FE
 
       const wallet = await this.walletService.createWallet(
         name,
@@ -33,15 +39,13 @@ export default class WalletController {
         username
       );
 
-      // encrypt did before sending to FE
-
       return res.status(201).json({
         data: { wallet: wallet, didUri: portableDid.uri },
       });
     } catch (error) {
       console.log(error);
       res
-        .status(500)
+        .status(error.statusCode || 500)
         .json({ message: error.message || "internal server error" });
     }
   }

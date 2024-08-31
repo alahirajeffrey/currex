@@ -1,5 +1,6 @@
 import Wallet from "../models/Wallet.js";
 import dotenv from "dotenv";
+import ApiError from "../utils/errorHandler.js";
 
 dotenv.config();
 
@@ -20,7 +21,7 @@ class WalletRepository {
         username: username,
       });
 
-      if (usernameExists) throw new Error("username already exists");
+      if (usernameExists) throw new ApiError(400, "username already exists");
 
       const balances = [
         { currency: "GHS", amount: initialBalance },
@@ -44,23 +45,29 @@ class WalletRepository {
         balances: balances,
       });
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
   async findWalletById(id) {
     try {
-      return await this.walletModel.findById(id);
+      const wallet = await this.walletModel.findById(id);
+      if (!wallet) throw new ApiError(404, "wallet does not exist");
+
+      return wallet;
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
   async findWalletByUsername(username) {
     try {
-      return await this.walletModel.findOne({ username: username });
+      const wallet = await this.walletModel.findOne({ username: username });
+      if (!wallet) throw new ApiError(404, "wallet does not exist");
+
+      return wallet;
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 }

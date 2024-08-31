@@ -1,4 +1,5 @@
 import Rating from "../models/Rating.js";
+import ApiError from "../utils/errorHandler.js";
 
 class RatingRepository {
   constructor(Rating) {
@@ -9,15 +10,18 @@ class RatingRepository {
     try {
       return await this.ratingModel.find({});
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
   async getSingleRatingAndComments(ratingId) {
     try {
-      return await this.ratingModel.findById(ratingId);
+      const rating = await this.ratingModel.findById(ratingId);
+      if (!rating) throw new ApiError(404, "rating does not exist");
+
+      return rating;
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
@@ -25,10 +29,10 @@ class RatingRepository {
     try {
       const rating = await this.ratingModel.find({ pfiDid });
 
-      if (!rating) throw new Error("rating does not exist for the pfi");
+      if (!rating) throw new ApiError(404, "rating does not exist for the pfi");
       return rating;
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
@@ -42,7 +46,7 @@ class RatingRepository {
         pfiDid,
       });
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 }

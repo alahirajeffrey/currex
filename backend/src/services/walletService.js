@@ -3,6 +3,7 @@ import Wallet from "../models/Wallet.js";
 import axios from "axios";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import ApiError from "../utils/errorHandler.js";
 
 export default class WalletService {
   walletRepository = new WalletRepository(Wallet);
@@ -38,10 +39,11 @@ export default class WalletService {
   async loginToWallet(username, password) {
     try {
       const wallet = await this.walletRepository.findWalletByUsername(username);
-      if (!wallet) throw new Error("user does not exist");
+      // if (!wallet) throw new Error("user does not exist");
 
       const isPasswordCorrect = await bcrypt.compare(password, wallet.password);
-      if (!isPasswordCorrect) throw new Error("incorrect password or username");
+      if (!isPasswordCorrect)
+        throw new ApiError(401, "incorrect password or username");
 
       // generate token for user
       const token = jwt.sign(
@@ -59,7 +61,7 @@ export default class WalletService {
 
       return token;
     } catch (error) {
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
@@ -78,8 +80,7 @@ export default class WalletService {
 
       return response;
     } catch (error) {
-      console.log(error);
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 

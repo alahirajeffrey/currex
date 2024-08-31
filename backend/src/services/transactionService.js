@@ -11,6 +11,7 @@ import { VerifiableCredential, PresentationExchange } from "@web5/credentials";
 import TransactionRepository from "../repositories/transactionRepository.js";
 import allowedPfis from "../../../allowedPfis.json" assert { type: "json" };
 import Transaction from "../models/Transaction.js";
+import ApiError from "../utils/errorHandler.js";
 
 export default class TransactionService {
   transactionRepository = new TransactionRepository(Transaction);
@@ -47,7 +48,7 @@ export default class TransactionService {
       return allOfferings;
     } catch (error) {
       console.log(error);
-      throw new Error(error);
+      throw new ApiError(500, error);
     }
   }
 
