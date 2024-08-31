@@ -1,7 +1,9 @@
-export default class ErrorHandler extends Error {
+export default class ApiError extends Error {
   constructor(statusCode, message) {
-    super();
+    super(message);
     this.statusCode = statusCode;
     this.message = message;
+
+    Error.captureStackTrace(this, this.constructor);
   }
 }
