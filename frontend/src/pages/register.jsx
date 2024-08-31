@@ -37,8 +37,8 @@ const Register = () => {
         navigate("/login");
       }
     } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred. Please try again.");
+      console.error(error.message);
+      return alert("An error occurred. Please try again.");
     }
   };
 

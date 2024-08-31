@@ -49,16 +49,17 @@ const Login = () => {
             verifiableCredentialResponse.data.data
           );
         } else {
-          navigate("/wallet");
+          navigate("/dashboard");
         }
 
         navigate("/dashboard");
-      } else {
-        alert("Login failed. Please check your username and password.");
       }
     } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred. Please try again.");
+      if (error.status === 401)
+        return alert("Login failed. Please check your username and password.");
+      if (error.status === 404) return alert("User does not exist.");
+      console.error(error);
+      return alert("An error occurred. Please try again.");
     }
   };
 

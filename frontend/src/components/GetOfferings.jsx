@@ -32,7 +32,8 @@ const GetOffering = () => {
       setOfferings(response.data.data);
       setIsModalOpen(true);
     } catch (error) {
-      console.error("Error fetching offerings:", error);
+      console.error(error);
+      alert("Error fetching offerings:");
     }
   };
 
