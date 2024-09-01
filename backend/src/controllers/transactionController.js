@@ -15,8 +15,6 @@ export default class TransactionController {
       const from = req.params.from;
       const to = req.params.to;
 
-      if (!to && !from) throw new Error("to and from currencies required");
-
       const offerings = await this.transactionService.fetchOfferings(to, from);
 
       return res.status(200).json({ data: offerings });
@@ -32,7 +30,6 @@ export default class TransactionController {
     try {
       const { pfiDid } = req.prams.pfiDid;
 
-      if (!pfiDid) throw new Error("pfiDid required");
       const transactions =
         await this.transactionService.getPfiTransactionsByDid(pfiDid);
 
@@ -49,7 +46,6 @@ export default class TransactionController {
     try {
       const { transactionId } = req.prams.transactionId;
 
-      if (!transactionId) throw new Error("transactonId required");
       const transaction =
         await this.transactionService.getSingleTransactionById(transactionId);
 
@@ -66,7 +62,6 @@ export default class TransactionController {
     try {
       const { walletId } = req.user.walletId;
 
-      if (!walletId) throw new Error("walletId required");
       const transactions =
         await this.transactionService.getWalletTransactionById(walletId);
 
