@@ -14,8 +14,6 @@ export default class RatingController {
   async addRating(req, res) {
     try {
       const { rating, comment, pfi, pfiDid } = req.body;
-      if (!rating && !pfi && !pfiDid)
-        throw new Error("rating, pfi and pfiDid required ");
 
       const newRating = await this.ratingService.addRating(
         pfi,
@@ -37,8 +35,6 @@ export default class RatingController {
   // get single rating and comment
   async getSingleRatingAndComments(req, res) {
     try {
-      if (!req.params.ratingId) throw Error("rating id is required");
-
       const rating = await this.ratingService.getSingleRatingAndComments(
         req.params.ratingId
       );
