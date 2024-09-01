@@ -18,12 +18,6 @@ export default class WalletController {
     try {
       const { name, password, countryCode, username } = req.body;
 
-      if (!name && !password && !countryCode && !username)
-        throw new ApiError(
-          400,
-          "name, password, countryCode, username required"
-        );
-
       // Creates a DID using the DHT method and publishes the DID Document to the DHT
       const didDht = await DidDht.create({ publish: true });
 
@@ -53,8 +47,6 @@ export default class WalletController {
   async loginToWallet(req, res) {
     try {
       const { username, password } = req.body;
-      if (!username && !password)
-        throw new ApiError(400, "username and password required");
 
       const token = await this.walletService.loginToWallet(username, password);
 
