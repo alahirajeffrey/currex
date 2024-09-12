@@ -38,3 +38,21 @@ export const getPfiOfferingsValidation = Joi.object().keys({
   to: Joi.string().required(),
   from: Joi.string().required(),
 });
+
+export const createExchangeValidation = Joi.object().keys({
+  offering: Joi.object().required(),
+  from: Joi.string().required(),
+  amount: Joi.string().required(),
+  payoutPaymentDetails: Joi.string().required(),
+  verifiableCredential: Joi.string().required(),
+  did: Joi.string().required(),
+});
+
+export const addAndCloseOrderValidation = Joi.object().keys({
+  exchangeId: Joi.string().required(),
+  pfiUri: Joi.string().required(),
+  reason: Joi.string().required(),
+  from: Joi.string().required(),
+  to: Joi.string().required(),
+  pfi: Joi.string().required(),
+});
