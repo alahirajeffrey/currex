@@ -9,6 +9,8 @@ import {
   getPfiOfferingsValidation,
   getPfiRatingValidation,
   getTranasctionByIdValidation,
+  createExchangeValidation,
+  addAndCloseOrderValidation,
 } from "../utils/validations.js";
 
 const transactionRepository = new TransactionRepository(Transaction);
@@ -39,6 +41,20 @@ transctionRouter.get(
   "/wallet",
   verifyToken,
   tranasctionController.getWalletTransactionById.bind(tranasctionController)
+);
+
+transctionRouter.post(
+  "/create-exchange",
+  verifyToken,
+  routerValidator.body(createExchangeValidation),
+  tranasctionController.createExchange.bind(tranasctionController)
+);
+
+transctionRouter.get(
+  "/close-order",
+  verifyToken,
+  routerValidator.body(addAndCloseOrderValidation),
+  tranasctionController.addAndCloseOrder.bind(tranasctionController)
 );
 
 export default transctionRouter;
