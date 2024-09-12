@@ -73,4 +73,57 @@ export default class TransactionController {
         .json({ message: error.message || "internal server error" });
     }
   }
+
+  async createExchange(req, res) {
+    try {
+      const {
+        offering,
+        amount,
+        from,
+        payoutPaymentDetails,
+        verifiableCredential,
+        did,
+      } = req.body;
+
+      const exchanges = await this.transactionService.createExchange(
+        req.user.walletId,
+        offering,
+        amount,
+        from,
+        payoutPaymentDetails,
+        verifiableCredential,
+        did
+      );
+
+      return res.status(200).json({ data: exchanges });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: error.message || "internal server error" });
+    }
+  }
+
+  async addAndCloseOrder(req, res) {
+    try {
+      const { exchangeId, pfiUri, reason, from, to, pfi } = req.body;
+
+      const transaction = await this.transactionService.addCloseAndOrder(
+        exchangeId,
+        pfiUri,
+        reason,
+        req.user.walletId,
+        from,
+        to,
+        pfi
+      );
+
+      return res.status(200).json({ data: transaction });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: error.message || "internal server error" });
+    }
+  }
 }
